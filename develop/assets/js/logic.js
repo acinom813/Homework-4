@@ -12,12 +12,16 @@ var submitBtn = document.getElementById("submit");
 var startBtn = document.getElementById("start");
 var initialsEl = document.getElementById("initials");
 var feedbackEl = document.getElementById("feedback");
-var startScreenEl = document.getElementById("start-screen")
+var startScreenEl = document.getElementById("start-screen");
+var endScreenEl = document.getElementById("end-screen");
+var finalScoreEl = document.getElementById("final-score");
 
 var questionTitleEl = document.getElementById("question-title");
+
+
 // sound effects
-var sfxRight = new Audio("assets/sfx/correct.wav");
-var sfxWrong = new Audio("assets/sfx/incorrect.wav");
+//var sfxRight = new Audio("assets/sfx/correct.wav");
+//var sfxWrong = new Audio("assets/sfx/incorrect.wav");
 
 // Step 1: Quiz begins, question appears, intro screen goes away
 
@@ -69,7 +73,7 @@ function getQuestion() {
 
 function questionClick() {
   // check if user guessed wrong
-  if (this.value !== questions[currentQuestionIndex].answer) {
+  if (this.value === questions[currentQuestionIndex].answer) {
     // penalize time
     time -= 15;
 
@@ -105,15 +109,19 @@ function questionClick() {
 }
 
 function quizEnd() {
+
+  
+  endScreenEl.setAttribute("class", "end-screen");
   // stop timer
 
   // show end screen
 
   // show final score
-
+    finalScoreEl.setAttribute("class", "final-score");
   // hide questions section
   questionsEl.setAttribute("class", "hide");
 }
+
 
 function clockTick() {
   // update time
