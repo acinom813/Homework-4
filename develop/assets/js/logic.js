@@ -1,3 +1,4 @@
+
 // variables to keep track of quiz state
 var currentQuestionIndex = 0;
 var time = questions.length * 15;
@@ -11,18 +12,36 @@ var submitBtn = document.getElementById("submit");
 var startBtn = document.getElementById("start");
 var initialsEl = document.getElementById("initials");
 var feedbackEl = document.getElementById("feedback");
+var startScreenEl = document.getElementById("start-screen")
 
+var questionTitleEl = document.getElementById("question-title");
 // sound effects
 var sfxRight = new Audio("assets/sfx/correct.wav");
 var sfxWrong = new Audio("assets/sfx/incorrect.wav");
 
-function startQuiz() {
+// Step 1: Quiz begins, question appears, intro screen goes away
+
+startBtn.addEventListener("click", startQuiz)
+
+   // Step 2: Timer begins
+   // Step 3: User answers question, shows correct or incorrect
+   // Step 4: if correct moves to next question, if incorrect deducts 15 secs
+   // Step 5: At end of questions hide all questions
+   // Step 6: Alert user they are done, display score, 
+   // Step 7: user types initials and clicks submit, 
+   // Step 8: displays high scores
+   // Setp 9: button to go back 
+function startQuiz()
+ { 
+   
+   startScreenEl.classList.add("hide")
+   questionsEl.classList.remove("hide")
   // hide start screen
 
   // un-hide questions section
 
   // start timer
-
+  timerId = setInterval(clockTick,1000)
   // show starting time
 
   getQuestion();
@@ -30,20 +49,22 @@ function startQuiz() {
 
 function getQuestion() {
   // get current question object from array
-  var currentQuestion = questions[currentQuestionIndex];
+  var currentQuestion = questions[currentQuestionIndex].title;
 
+  questionTitleEl.textContent = currentQuestion
   // update title with current question
 
   // clear out any old question choices
-
+  choicesEl.textContent = ""
   // loop over choices
-  currentQuestion.choices.forEach(function(choice, i) {
-    // create new button for each choice
+   for (let i = 0; i < questions[currentQuestionIndex].choices.length; i++) {
+        
+         var button = document.createElement("button")
+         button.textContent =  questions[currentQuestionIndex].choices[i]
+         button.addEventListener("click", questionClick) 
 
-    // attach click event listener to each choice
-
-    // display on the page
-  });
+         choicesEl.append(button)
+   }
 }
 
 function questionClick() {
@@ -66,7 +87,7 @@ function questionClick() {
 
     feedbackEl.textContent = "Correct!";
   }
-
+  currentQuestionIndex++  
   // flash right/wrong feedback on page for half a second
   feedbackEl.setAttribute("class", "feedback");
   setTimeout(function() {
