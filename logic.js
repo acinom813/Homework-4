@@ -19,8 +19,8 @@ var questionTitleEl = document.getElementById("question-title");
 
 
 // sound effects
-var sfxRight = new Audio("assets/soundfx/correct.wav");
-var sfxWrong = new Audio("assets/soundfx/incorrect.wav");
+var sfxRight = new Audio("Assets/correct.wav");
+var sfxWrong = new Audio("Assets/incorrect.wav");
 
 // Step 1: Quiz begins, question appears, intro screen goes away
 // Step 2: Timer begins
