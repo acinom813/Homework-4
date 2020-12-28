@@ -15,52 +15,37 @@ var feedbackEl = document.getElementById("feedback");
 var startScreenEl = document.getElementById("start-screen");
 var endScreenEl = document.getElementById("end-screen");
 var finalScoreEl = document.getElementById("final-score");
-
 var questionTitleEl = document.getElementById("question-title");
 
 
 // sound effects
-//var sfxRight = new Audio("assets/sfx/correct.wav");
-//var sfxWrong = new Audio("assets/sfx/incorrect.wav");
+var sfxRight = new Audio("assets/soundfx/correct.wav");
+var sfxWrong = new Audio("assets/soundfx/incorrect.wav");
 
 // Step 1: Quiz begins, question appears, intro screen goes away
+// Step 2: Timer begins
+// Step 3: User answers question, shows correct or incorrect
+// Step 4: if correct moves to next question, if incorrect deducts 15 secs
+// Step 5: At end of questions hide all questions, stop timer
+// Step 6: Alert user they are done, display score, 
+// Step 7: user types initials and clicks submit, 
+// Step 8: displays high scores
+// Setp 9: button to go back 
 
 startBtn.addEventListener("click", startQuiz)
 
-   // Step 2: Timer begins
-   // Step 3: User answers question, shows correct or incorrect
-   // Step 4: if correct moves to next question, if incorrect deducts 15 secs
-   // Step 5: At end of questions hide all questions
-   // Step 6: Alert user they are done, display score, 
-   // Step 7: user types initials and clicks submit, 
-   // Step 8: displays high scores
-   // Setp 9: button to go back 
 function startQuiz()
  { 
-   
    startScreenEl.classList.add("hide")
    questionsEl.classList.remove("hide")
-  // hide start screen
-
-  // un-hide questions section
-
-  // start timer
   timerId = setInterval(clockTick,1000)
-  // show starting time
-
   getQuestion();
 }
 
 function getQuestion() {
-  // get current question object from array
   var currentQuestion = questions[currentQuestionIndex].title;
-
   questionTitleEl.textContent = currentQuestion
-  // update title with current question
-
-  // clear out any old question choices
   choicesEl.textContent = ""
-  // loop over choices
    for (let i = 0; i < questions[currentQuestionIndex].choices.length; i++) {
         
          var button = document.createElement("button")
@@ -72,35 +57,26 @@ function getQuestion() {
 }
 
 function questionClick() {
-  // check if user guessed wrong
   if (this.value === questions[currentQuestionIndex].answer) {
-    // penalize time
     time -= 15;
-
+  
     if (time < 0) {
       time = 0;
     }
 
-    // display new time on page
+  feedbackEl.textContent = "Wrong!";
+  } 
+  else {
 
-    // play "wrong" sound effect
-
-    feedbackEl.textContent = "Wrong!";
-  } else {
-    // play "right" sound effect
-
-    feedbackEl.textContent = "Correct!";
+  feedbackEl.textContent = "Correct!";
   }
   currentQuestionIndex++  
-  // flash right/wrong feedback on page for half a second
+
   feedbackEl.setAttribute("class", "feedback");
   setTimeout(function() {
     feedbackEl.setAttribute("class", "feedback hide");
   }, 1000);
 
-  // move to next question
-
-  // check if we've run out of questions
   if (currentQuestionIndex === questions.length) {
     quizEnd();
   } else {
@@ -108,19 +84,18 @@ function questionClick() {
   }
 }
 
-function quizEnd() {
-
-  
-  endScreenEl.setAttribute("class", "end-screen");
+function quizEnd ()
+  {
+endScreenEl.setAttribute("class", "end-screen");
   // stop timer
-
+  
   // show end screen
 
   // show final score
     finalScoreEl.setAttribute("class", "final-score");
   // hide questions section
   questionsEl.setAttribute("class", "hide");
-}
+  }
 
 
 function clockTick() {
