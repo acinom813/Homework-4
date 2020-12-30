@@ -21,7 +21,7 @@ var questionTitleEl = document.getElementById("question-title");
 // sound effects
 var sfxRight = new Audio("Assets/correct.wav");
 var sfxWrong = new Audio("Assets/incorrect.wav");
-
+var highScores =   localStorage.getItem("highscores") ? JSON.parse(localStorage.getItem("highscores")): []
 // Step 1: Quiz begins, question appears, intro screen goes away
 // Step 2: Timer begins
 // Step 3: User answers question, shows correct or incorrect
@@ -82,17 +82,26 @@ function questionClick() {
   } else {
     getQuestion();
   }
+  
 }
+
+//tried to save score, unsuccessfully
+//function renderLastRegistered() {
+  //var finalScoreEl = localStorage. getItem("final-score");
+  //var initialsEl = localStorage. getItem("initals");
+
+
 
 function quizEnd ()
   {
-endScreenEl.setAttribute("class", "end-screen");
+    endScreenEl.setAttribute("class", "end-screen");
   // stop timer
-  
+  clearInterval(timerId)
   // show end screen
 
   // show final score
     finalScoreEl.setAttribute("class", "final-score");
+    finalScoreEl.innerHTML= time
   // hide questions section
   questionsEl.setAttribute("class", "hide");
   }
@@ -106,24 +115,27 @@ function clockTick() {
   // check if user ran out of time
   if (time <= 0) {
     quizEnd();
+   
+    quizEnd();
   }
 }
 
 function saveHighscore() {
   // get value of input box
-
+   
   // make sure value wasn't empty
   if (initials !== "") {
     // get saved scores from localstorage, or if not any, set to empty array
 
     // format new score object for current user
-    var newScore = {
+    var newScore ={
       score: time,
-      initials: initials
+      initials:  initialsEl.value
     };
 
+    highScores.push(newScore)
     // save to localstorage
-
+   localStorage.setItem("highscores",JSON.stringify(highScores) )
     // redirect to next page
     window.location.href = "highscores.html";
   }
